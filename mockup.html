@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Picker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(to bottom right, #3498db, #9b59b6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        p {
+            text-align: center;
+            color: #34495e;
+            margin-bottom: 1.5rem;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .question {
+            display: none;
+        }
+        .option {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background-color: #f1f2f6;
+            border: none;
+            border-radius: 4px;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .option:hover {
+            background-color: #dfe4ea;
+        }
+        .progress {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="landing">
+            <h1>Destination Picker</h1>
+            <p>Find your perfect vacation spot in just a few clicks!</p>
+            <button class="btn" onclick="startQuiz()">Start Quiz</button>
+        </div>
+        
+        <div id="quiz" style="display: none;">
+            <div class="question" id="q1">
+                <h2>Where do you want to go?</h2>
+                <button class="option" onclick="nextQuestion(2)">Domestic</button>
+                <button class="option" onclick="nextQuestion(2)">Visa on Arrival</button>
+                <button class="option" onclick="nextQuestion(2)">International</button>
+            </div>
+            
+            <div class="question" id="q2">
+                <h2>When do you want to go?</h2>
+                <button class="option" onclick="nextQuestion(3)">Spring</button>
+                <button class="option" onclick="nextQuestion(3)">Summer</button>
+                <button class="option" onclick="nextQuestion(3)">Autumn</button>
+                <button class="option" onclick="nextQuestion(3)">Winter</button>
+            </div>
+            
+            <div class="question" id="q3">
+                <h2>What do you want to do?</h2>
+                <button class="option" onclick="nextQuestion(4)">Mountains</button>
+                <button class="option" onclick="nextQuestion(4)">Beaches</button>
+                <button class="option" onclick="nextQuestion(4)">Art & History</button>
+                <button class="option" onclick="nextQuestion(4)">Adventure</button>
+            </div>
+            
+            <div class="question" id="q4">
+                <h2>Who are you traveling with?</h2>
+                <button class="option" onclick="nextQuestion(5)">Solo</button>
+                <button class="option" onclick="nextQuestion(5)">Friends</button>
+                <button class="option" onclick="nextQuestion(5)">Couple</button>
+                <button class="option" onclick="nextQuestion(5)">Family</button>
+                <button class="option" onclick="nextQuestion(5)">Parents</button>
+            </div>
+            
+            <div class="question" id="q5">
+                <h2>What's your budget range?</h2>
+                <button class="option" onclick="showResults()">Budget</button>
+                <button class="option" onclick="showResults()">Mid-range</button>
+                <button class="option" onclick="showResults()">Luxury</button>
+            </div>
+            
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div id="results" style="display: none;">
+            <h2>Your Recommended Destinations</h2>
+            <p>Based on your preferences, we recommend:</p>
+            <ul id="recommendationList"></ul>
+            <button class="btn" onclick="resetQuiz()">Start Over</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        const totalQuestions = 5;
+        
+        function startQuiz() {
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            showQuestion(1);
+        }
+        
+        function showQuestion(num) {
+            document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+            document.getElementById(`q${num}`).style.display = 'block';
+            currentQuestion = num;
+            updateProgress();
+        }
+        
+        function nextQuestion(num) {
+            showQuestion(num);
+        }
+        
+        function updateProgress() {
+            document.getElementById('progress').textContent = `Question ${currentQuestion} of ${totalQuestions}`;
+        }
+        
+        function showResults() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            
+            // In a real application, you would send the user's choices to the backend
+            // and receive personalized recommendations. For this example, we'll use dummy data.
+            const dummyRecommendations = ['Paris, France', 'Bali, Indonesia', 'Queenstown, New Zealand'];
+            const recommendationList = document.getElementById('recommendationList');
+            recommendationList.innerHTML = '';
+            dummyRecommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                recommendationList.appendChild(li);
+            });
+        }
+        
+        function resetQuiz() {
+            currentQuestion = 0;
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('landing').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
